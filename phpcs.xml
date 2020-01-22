@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="rtCamp Google Embeds">
+	<description>A custom set of rules to check for a rtCamp Google Embeds plugin</description>
+
+	<arg name="extensions" value="php"/>
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="5.6-"/>
+
+	<arg value="psvn"/>
+
+	<arg name="parallel" value="8"/>
+
+	<file>.</file>
+
+	<rule ref="WordPress-VIP-Go" />
+	<rule ref="WordPress-Extra" />
+	<rule ref="WordPress-Docs" />
+
+	<rule ref="PEAR.NamingConventions.ValidClassName.StartWithCapital">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Generic.Commenting.DocComment.ShortNotCapital">
+		<severity>0</severity>
+	</rule>
+
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/languages/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+</ruleset>

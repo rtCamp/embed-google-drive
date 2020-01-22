@@ -1,0 +1,10 @@
+.rt-google-doc-embed {
+  border: 1px solid #000;
+  text-align: center;
+}
+
+.rt-google-doc-embed img {
+  border: 1px solid #eee;
+  margin: 15px auto;
+  display: block;
+}

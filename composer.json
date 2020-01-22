@@ -1,0 +1,23 @@
+{
+  "name"       : "rtcamp/rt-google-embeds",
+  "description": "Allows adding preview for your Google Drive Documents right in your editor.",
+  "homepage"   : "https://github.com/rtCamp/rt-google-embeds/",
+  "type"       : "wordpress-plugin",
+  "license"    : "GPL2.0",
+  "require-dev": {
+    "automattic/vipwpcs": "^2.0.0",
+    "wp-coding-standards/wpcs": "*",
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/phpcompatibility-wp": "*"
+  },
+  "authors": [
+    {
+      "name": "Thrijith Thankachan",
+      "email": "thrijith13@gmail.com"
+    }
+  ],
+  "scripts": {
+    "phpcs": "\"./vendor/bin/phpcs\"",
+    "phpcbf": "\"./vendor/bin/phpcbf\""
+  }
+}

@@ -1,0 +1,18 @@
+# Editors
+.idea
+
+# Grunt
+/node_modules/
+none
+
+# Sass
+.sass-cache/
+
+# OS X metadata
+.DS_Store
+
+# Windows junk
+Thumbs.db
+
+# Composer
+/vendor/
