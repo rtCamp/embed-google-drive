@@ -43,6 +43,7 @@ class rtCamp_Google_Embeds {
 		$this->add_plugin_constants();
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
 		add_action( 'after_setup_theme', array( $this, 'rt_google_embed_add_editor_css' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
 	}
@@ -89,7 +90,7 @@ class rtCamp_Google_Embeds {
 		// Google Docs regex.
 		$gdoc_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
-			'google_docs',
+			'rt_google_docs',
 			$gdoc_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
@@ -97,7 +98,7 @@ class rtCamp_Google_Embeds {
 		// Google Sheets regex.
 		$gsheet_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/spreadsheets\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
-			'google_sheets',
+			'rt_google_sheets',
 			$gsheet_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
@@ -105,16 +106,24 @@ class rtCamp_Google_Embeds {
 		// Google Slides regex.
 		$gslides_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/presentation\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
-			'google_presentations',
+			'rt_google_presentations',
 			$gslides_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
 
 		// Common URL regex.
-		$gdoc_common_oembed_pattern = '#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i';
+		$gdrive_common_oembed_pattern = '#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i';
 		wp_embed_register_handler(
-			'google_doc_common',
-			$gdoc_common_oembed_pattern,
+			'rt_google_doc_common',
+			$gdrive_common_oembed_pattern,
+			array( $this, 'wpdocs_embed_handler_google_drive' )
+		);
+
+		// Common file URL regex.
+		$gdrive_common_file_oembed_pattern = '#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i';
+		wp_embed_register_handler(
+			'rt_google_file_common',
+			$gdrive_common_file_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
 	}
@@ -137,7 +146,7 @@ class rtCamp_Google_Embeds {
 			array(
 				'drive_file_url' => $url,
 				'thumbnail_url'  => $thumbnail_url,
-			) 
+			)
 		);
 	}
 
