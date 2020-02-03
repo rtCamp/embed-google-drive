@@ -5,18 +5,27 @@
 	"author": "rtCamp",
 	"license": "GPL-2.0",
 	"scripts": {
+		"lint:js": "npm run lint:js:src",
+		"lint:js:src": "wp-scripts lint-js assets/js/blocks",
+		"lint:js:fix": "wp-scripts lint-js assets/js/blocks --fix",
+		"build:script": "npm run build:custom",
+		"build:custom": "wp-scripts build assets/js/blocks/index.js",
 		"build:style": "node-sass assets/css/rt-google-embed-main.scss build/rt-google-embed-main.css --output-style expanded && postcss -r build/rt-google-embed-main.css",
 		"build": "run-p \"build:*\"",
+		"dev:custom": "wp-scripts start assets/js/blocks/index.js",
 		"dev:scss": "chokidar \"./assets/**/*.scss\" -c \"npm run build:style\" --initial",
 		"dev": "run-p \"dev:*\"",
-		"language:make-po": "wp i18n make-pot . languages/rt-google-embdes.po",
+		"language:make-po": "wp i18n make-pot . --exclude=\"build\" languages/rt-google-embeds.po",
+		"language:make-json": "po2json languages/rt-google-embeds.po languages/rt-google-embed-blocks-script-assets.json -p --format jed",
 		"language": "run-s \"language:*\""
 	},
 	"devDependencies": {
+		"@wordpress/scripts": "^6.2.0",
 		"autoprefixer": "^9.7.4",
 		"chokidar-cli": "^1.2.1",
 		"node-sass": "^4.9.3",
 		"npm-run-all": "^4.1.5",
+		"po2json": "^0.4.5",
 		"postcss-cli": "^6.0.1"
 	}
 }
