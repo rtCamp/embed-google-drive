@@ -1,0 +1,78 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages"
+         },
+         "rtCamp Google Embeds": [
+            null,
+            ""
+         ],
+         "https://github.com/rtCamp/rt-google-embeds": [
+            null,
+            ""
+         ],
+         "Allows adding preview for your Google Drive Documents right in your editor.": [
+            null,
+            ""
+         ],
+         "rtCamp": [
+            null,
+            ""
+         ],
+         "https://rtcamp.com/": [
+            null,
+            ""
+         ],
+         "Open the Shared Document": [
+            null,
+            ""
+         ],
+         "Open Shared Document.": [
+            null,
+            ""
+         ],
+         "Shared Document Preview": [
+            null,
+            ""
+         ],
+         "Something went wrong": [
+            null,
+            ""
+         ],
+         "Invalid Drive URL.": [
+            null,
+            ""
+         ],
+         "Edit file URL": [
+            null,
+            ""
+         ],
+         "Show Preview": [
+            null,
+            ""
+         ],
+         "Paste your Google Drive Sharing URL into the field below.": [
+            null,
+            ""
+         ],
+         "Paste File URL Here": [
+            null,
+            ""
+         ],
+         "Google Drive File Preview": [
+            null,
+            ""
+         ],
+         "Drive File Preview": [
+            null,
+            ""
+         ],
+         "Drive": [
+            null,
+            ""
+         ]
+      }
+   }
+}

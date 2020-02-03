@@ -46,6 +46,7 @@ class rtCamp_Google_Embeds {
 		add_action( 'admin_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
 		add_action( 'after_setup_theme', array( $this, 'rt_google_embed_add_editor_css' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
+		add_action( 'init', array( $this, 'blocks_init' ) );
 	}
 
 	/**
@@ -129,6 +130,55 @@ class rtCamp_Google_Embeds {
 	}
 
 	/**
+	 * Registers all block assets so that they can be enqueued through the block editor in the corresponding context.
+	 */
+	public function blocks_init() {
+
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+
+		// Load dependencies and version from build file.
+		$script_asset_path = RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'build/index.asset.php';
+		$script_asset      = require $script_asset_path;
+
+		// Register Blocks Script.
+		wp_register_script(
+			'rt-google-embed-blocks-script-assets',
+			plugins_url( 'build/index.js', RT_GOOGLE_EMBEDS_PLUGIN_FILE ),
+			$script_asset['dependencies'],
+			$script_asset['version'],
+			true
+		);
+
+		// Data to be used in blocks.
+		$rt_embed_data = [
+			'noPreviewURL' => plugins_url( 'assets/img/no-preview.png', RT_GOOGLE_EMBEDS_PLUGIN_FILE ),
+		];
+
+		// Pass data to block script.
+		wp_localize_script(
+			'rt-google-embed-blocks-script-assets',
+			'rtGoogleEmbedBlockData',
+			$rt_embed_data
+		);
+
+		// Register Google Drive File Preview Block.
+		register_block_type(
+			'rt-google-embed/drive-file-preview',
+			array(
+				'editor_script' => 'rt-google-embed-blocks-script-assets',
+				'style'         => 'rt-google-embed-post-view',
+			)
+		);
+
+		// Sets translated strings for a script.
+		wp_set_script_translations(
+			'rt-google-embed-blocks-script-assets',
+			'rt-google-embeds',
+			RT_GOOGLE_EMBEDS_PLUGIN_FILE . 'languages/'
+		);
+	}
+
+	/**
 	 * Render preview for provided URL.
 	 *
 	 * @param array  $matches The RegEx matches from the provided regex when calling
@@ -164,7 +214,7 @@ class rtCamp_Google_Embeds {
 		if ( ! empty( $data ) && is_array( $data ) ) {
 			extract( $data, EXTR_OVERWRITE );
 		}
-        include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore
+		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore
 		$embed_markup = ob_get_clean();
 
 		return $embed_markup;
@@ -195,6 +245,38 @@ class rtCamp_Google_Embeds {
 		}
 
 		return $no_preview_url;
+	}
+
+	/**
+	 * Register endpoints.
+	 */
+	public function register_routes() {
+		register_rest_route(
+			'rt-google-embed/v1',
+			'/get-preview-url',
+			[
+				'methods'  => 'GET',
+				'callback' => [ $this, 'get_thumb_preview' ],
+				'args'     => [
+					'media_id' => [
+						'file_id' => true,
+					],
+				],
+			]
+		);
+	}
+
+	/**
+	 * REST API callback to get drive preview URL.
+	 *
+	 * @param \WP_REST_Request $request REST Instance.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_thumb_preview( \WP_REST_Request $request ) {
+		$file_id             = $request->get_param( 'file_id' );
+		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
+		return new \WP_REST_Response( $data, 200 );
 	}
 }
 
