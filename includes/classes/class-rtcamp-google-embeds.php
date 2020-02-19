@@ -69,7 +69,7 @@ class rtCamp_Google_Embeds {
 		);
 		
 		foreach ( $formats as $format ) {
-			$providers[ $format ] = array( get_rest_url() . 'rt-google-embed/v1/oembed', true );
+			$providers[ $format ] = array( get_rest_url( null, 'rt-google-embed/v1/oembed' ), true );
 		}
 	
 		return $providers;
