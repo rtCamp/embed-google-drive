@@ -188,13 +188,13 @@ class rtCamp_Google_Embeds {
 		);
 
 		// Register Google Drive File Preview Block.
-		register_block_type(
-			'rt-google-embed/drive-file-preview',
-			array(
-				'editor_script' => 'rt-google-embed-blocks-script-assets',
-				'style'         => 'rt-google-embed-post-view',
-			)
-		);
+		// register_block_type(
+		// 	'rt-google-embed/drive-file-preview',
+		// 	array(
+		// 		'editor_script' => 'rt-google-embed-blocks-script-assets',
+		// 		'style'         => 'rt-google-embed-post-view',
+		// 	)
+		// );
 
 		// Sets translated strings for a script.
 		wp_set_script_translations(
