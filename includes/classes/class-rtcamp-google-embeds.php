@@ -217,6 +217,10 @@ class rtCamp_Google_Embeds {
 	public function wpdocs_embed_handler_google_drive( $matches, $attr, $url ) {
 		$thumbnail_url = $this->get_thumbnail_url( $matches[1] );
 
+		if ( ! $thumbnail_url ) {
+			return '';
+		}
+
 		return $this->render_embed(
 			'google-drive-file',
 			array(
