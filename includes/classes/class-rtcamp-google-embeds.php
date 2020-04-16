@@ -265,6 +265,14 @@ class rtCamp_Google_Embeds {
 			return new \WP_REST_Response( array(), 404 );
 		}
 
+		// Get preview url.
+		$thumbnail_url = $this->get_thumbnail_url( $file_id );
+
+		// If permission is not set or invalid url, send 404.
+		if ( empty( $thumbnail_url ) ) {
+			return new \WP_REST_Response( array(), 404 );
+		}
+
 		// Data to send as response.
 		$data = array(
 			'type'    => 'rich', // We want to show rich html.
@@ -279,14 +287,6 @@ class rtCamp_Google_Embeds {
 		// Set maxwidth.
 		if ( ! empty( $request->get_param( 'maxwidth' ) ) ) {
 			$data['width'] = $request->get_param( 'maxwidth' );
-		}
-
-		// Get preview url.
-		$thumbnail_url = $this->get_thumbnail_url( $file_id );
-
-		// If permission is not set or invalid url, send 404.
-		if ( empty( $thumbnail_url ) ) {
-			return new \WP_REST_Response( array(), 404 );
 		}
 
 		// Set html.
