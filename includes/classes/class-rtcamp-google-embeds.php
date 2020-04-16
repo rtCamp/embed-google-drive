@@ -46,8 +46,8 @@ class rtCamp_Google_Embeds {
 		add_action( 'admin_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
 		add_action( 'after_setup_theme', array( $this, 'rt_google_embed_add_editor_css' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
-		add_action( 'init', array( $this, 'blocks_init' ) );
-		
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+
 		// Register custom oembed provider for google drive urls.
 		add_filter( 'oembed_providers', array( $this, 'oembed_providers' ) );
 	}
@@ -77,6 +77,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Define required plugin constants.
+	 * 
+	 * @return void
 	 */
 	private function add_plugin_constants() {
 		define( 'RT_GOOGLE_EMBEDS_VERSION', '0.1.0' );
@@ -85,6 +87,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Loads plugin textdomain.
+	 * 
+	 * @return void
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
@@ -92,6 +96,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Enqueue the styles required by the embed.
+	 * 
+	 * @return void
 	 */
 	public function rt_google_embed_enqueue_scripts() {
 		wp_register_style(
@@ -105,6 +111,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Add style inside the editor required by the embed.
+	 * 
+	 * @return void
 	 */
 	public function rt_google_embed_add_editor_css() {
 		add_editor_style( plugins_url( 'build/rt-google-embed-main.css', RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
@@ -112,6 +120,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Registers all supported embeds.
+	 * 
+	 * @return void
 	 */
 	public function register_embeds() {
 		// Google Docs regex.
@@ -152,55 +162,6 @@ class rtCamp_Google_Embeds {
 			'rt_google_file_common',
 			$gdrive_common_file_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
-		);
-	}
-
-	/**
-	 * Registers all block assets so that they can be enqueued through the block editor in the corresponding context.
-	 */
-	public function blocks_init() {
-
-		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
-
-		// Load dependencies and version from build file.
-		$script_asset_path = RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'build/index.asset.php';
-		$script_asset      = require $script_asset_path;
-
-		// Register Blocks Script.
-		wp_register_script(
-			'rt-google-embed-blocks-script-assets',
-			plugins_url( 'build/index.js', RT_GOOGLE_EMBEDS_PLUGIN_FILE ),
-			$script_asset['dependencies'],
-			$script_asset['version'],
-			true
-		);
-
-		// Data to be used in blocks.
-		$rt_embed_data = [
-			'noPreviewURL' => plugins_url( 'assets/img/no-preview.png', RT_GOOGLE_EMBEDS_PLUGIN_FILE ),
-		];
-
-		// Pass data to block script.
-		wp_localize_script(
-			'rt-google-embed-blocks-script-assets',
-			'rtGoogleEmbedBlockData',
-			$rt_embed_data
-		);
-
-		// Register Google Drive File Preview Block.
-		// register_block_type(
-		// 	'rt-google-embed/drive-file-preview',
-		// 	array(
-		// 		'editor_script' => 'rt-google-embed-blocks-script-assets',
-		// 		'style'         => 'rt-google-embed-post-view',
-		// 	)
-		// );
-
-		// Sets translated strings for a script.
-		wp_set_script_translations(
-			'rt-google-embed-blocks-script-assets',
-			'rt-google-embeds',
-			RT_GOOGLE_EMBEDS_PLUGIN_FILE . 'languages/'
 		);
 	}
 
@@ -286,6 +247,8 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Register endpoints.
+	 * 
+	 * @return void
 	 */
 	public function register_routes() {
 		register_rest_route(
