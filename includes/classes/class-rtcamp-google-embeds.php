@@ -322,16 +322,10 @@ class rtCamp_Google_Embeds {
 	 */
 	public function oembed( \WP_REST_Request $request ) {
 		// Get id from url query string.
-		$url        = $request->get_param( 'url' );
-		$parsed_url = wp_parse_url( $url );
-		// Return 404 if no query string found.
-		if ( empty( $parsed_url['query'] ) ) {
-			return new \WP_REST_Response( array(), 404 );
-		}
+		$url = $request->get_param( 'url' );
 
-		// Return 404 if no id found.
-		parse_str( $parsed_url['query'], $params );
-		if ( empty( $params['id'] ) ) {
+		$file_id = $this->get_file_id_from_url( $url );
+		if ( empty( $file_id ) ) {
 			return new \WP_REST_Response( array(), 404 );
 		}
 
@@ -352,7 +346,7 @@ class rtCamp_Google_Embeds {
 		}
 
 		// Get preview url.
-		$thumbnail_url = $this->get_thumbnail_url( $params['id'] );
+		$thumbnail_url = $this->get_thumbnail_url( $file_id );
 
 		// If permission is not set or invalid url, send 404.
 		if ( empty( $thumbnail_url ) ) {
@@ -374,6 +368,23 @@ class rtCamp_Google_Embeds {
 	}
 
 	/**
+	 * Gets file id from drive URL.
+	 *
+	 * @param string $url File URL.
+	 *
+	 * @return bool|string Returns false or ID.
+	 */
+	public function get_file_id_from_url( $url ) {
+		$matches = array();
+		preg_match( '/[-\w]{25,}/', $url, $matches );
+		if ( empty( $matches[0] ) ) {
+			return false;
+		}
+
+		return $matches[0];
+	}
+
+	/**
 	 * REST API callback to get drive preview URL.
 	 *
 	 * @param \WP_REST_Request $request REST Instance.
@@ -381,7 +392,13 @@ class rtCamp_Google_Embeds {
 	 * @return \WP_REST_Response
 	 */
 	public function get_thumb_preview( \WP_REST_Request $request ) {
-		$file_id             = $request->get_param( 'file_id' );
+		$url = $request->get_param( 'url' );
+
+		$file_id = $this->get_file_id_from_url( $url );
+		if ( empty( $file_id ) ) {
+			return new \WP_REST_Response( array(), 404 );
+		}
+
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
 		return new \WP_REST_Response( $data, 200 );
 	}
