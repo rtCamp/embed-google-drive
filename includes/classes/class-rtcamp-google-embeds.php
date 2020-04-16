@@ -42,9 +42,6 @@ class rtCamp_Google_Embeds {
 	public function __construct() {
 		$this->add_plugin_constants();
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'rt_google_embed_enqueue_scripts' ) );
-		add_action( 'after_setup_theme', array( $this, 'rt_google_embed_add_editor_css' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
@@ -92,30 +89,6 @@ class rtCamp_Google_Embeds {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
-	}
-
-	/**
-	 * Enqueue the styles required by the embed.
-	 * 
-	 * @return void
-	 */
-	public function rt_google_embed_enqueue_scripts() {
-		wp_register_style(
-			'rt-google-embed-post-view',
-			plugins_url( 'build/rt-google-embed-main.css', RT_GOOGLE_EMBEDS_PLUGIN_FILE ),
-			array(),
-			RT_GOOGLE_EMBEDS_VERSION
-		);
-		wp_enqueue_style( 'rt-google-embed-post-view' );
-	}
-
-	/**
-	 * Add style inside the editor required by the embed.
-	 * 
-	 * @return void
-	 */
-	public function rt_google_embed_add_editor_css() {
-		add_editor_style( plugins_url( 'build/rt-google-embed-main.css', RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
 	}
 
 	/**

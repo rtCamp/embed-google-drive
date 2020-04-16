@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="rt-google-doc-embed" style="border: 1px solid #000; text-align: center;">
+<div style="border: 1px solid #000; text-align: center;">
 	<a href="<?php echo esc_url( $drive_file_url ); ?>" title="<?php esc_attr_e( 'Open the Shared Document', 'rt-google-embeds' ); ?>" target="_blank" rel="noopener noreferrer" style="color: #cd2653;">
 		<?php esc_html_e( 'Open Shared Document.', 'rt-google-embeds' ); ?>
 	</a>

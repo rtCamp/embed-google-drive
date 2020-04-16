@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-02-03T22:46:07+05:30\n"
+"POT-Creation-Date: 2020-04-16T14:33:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: rt-google-embeds\n"
@@ -35,10 +35,6 @@ msgid "https://rtcamp.com/"
 msgstr ""
 
 #: templates/embeds/google-drive-file.php:14
-#: assets/js/blocks/google-drive-file-preview/edit.js:199
-#: assets/js/blocks/google-drive-file-preview/edit.js:200
-#: assets/js/blocks/google-drive-file-preview/save.js:13
-#: assets/js/blocks/google-drive-file-preview/save.js:14
 msgid "Open the Shared Document"
 msgstr ""
 
@@ -47,44 +43,5 @@ msgid "Open Shared Document."
 msgstr ""
 
 #: templates/embeds/google-drive-file.php:17
-#: assets/js/blocks/google-drive-file-preview/edit.js:202
-#: assets/js/blocks/google-drive-file-preview/save.js:16
 msgid "Shared Document Preview"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:125
-msgid "Something went wrong"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:130
-msgid "Invalid Drive URL."
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:163
-msgid "Edit file URL"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:163
-msgid "Show Preview"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:183
-msgid "Paste your Google Drive Sharing URL into the field below."
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/edit.js:186
-msgid "Paste File URL Here"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/settings.js:5
-#: assets/js/blocks/google-drive-file-preview/settings.js:9
-msgid "Google Drive File Preview"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/settings.js:10
-msgid "Drive File Preview"
-msgstr ""
-
-#: assets/js/blocks/google-drive-file-preview/settings.js:11
-msgid "Drive"
 msgstr ""
