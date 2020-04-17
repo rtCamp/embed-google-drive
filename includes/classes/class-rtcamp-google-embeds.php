@@ -59,10 +59,11 @@ class rtCamp_Google_Embeds {
 	public function oembed_providers( $providers ) {
 		$formats = array(
 			'#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i',
+			'#https?:\\/\\/docs\\.google\\.com\\/forms\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/docs\\.google\\.com\\/spreadsheets\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/docs\\.google\\.com\\/presentation\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i',
-			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i'
+			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i',
 		);
 		
 		foreach ( $formats as $format ) {
@@ -101,6 +102,14 @@ class rtCamp_Google_Embeds {
 		$gdoc_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
 			'rt_google_docs',
+			$gdoc_oembed_pattern,
+			array( $this, 'wpdocs_embed_handler_google_drive' )
+		);
+
+		// Google Forms regex.
+		$gdoc_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/forms\\/d\\/(.*)\\/(.*)?#i';
+		wp_embed_register_handler(
+			'rt_google_forms',
 			$gdoc_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
