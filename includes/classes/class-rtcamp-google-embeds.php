@@ -218,8 +218,6 @@ class rtCamp_Google_Embeds {
 				$status_code = wp_remote_retrieve_response_code( $response );
 				if ( 200 === $status_code ) {
 					return $thumbnail_url;
-				} else {
-					return false;
 				}
 			}
 		}
