@@ -44,9 +44,54 @@ class rtCamp_Google_Embeds {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( 'wp_google_login_token', array( $this, 'wp_google_login_token' ), 10, 3 );
 
 		// Register custom oembed provider for google drive urls.
 		add_filter( 'oembed_providers', array( $this, 'oembed_providers' ) );
+		add_filter( 'wp_google_login_scopes', array( $this, 'wp_google_login_scopes' ) );
+
+	}
+
+	/**
+	 * Receives the converted token after user logs in via Google account.
+	 *
+	 * @param array  $token      Converted access token.
+	 * @param array  $user_array User information fetched from token.
+	 * @param object $client     Google_Client object in use.
+	 *
+	 * @return void
+	 */
+	public function wp_google_login_token( $token, $user_info, $client ) {
+		// Check if necessary details are there.
+		if ( empty( $token['access_token'] ) || empty( $user_info['user_email'] ) ) {
+			return;
+		}
+
+		// Get user by email.
+		$user = get_user_by( 'email', $user_info['user_email'] );
+		if ( empty( $user->ID ) ) {
+			return;
+		}
+
+		// Store access token in user meta.
+		update_user_meta( $user->ID, 'rt-google-embeds-access-token', $token['access_token'] );
+	}
+
+	/**
+	 * Adds drive scope in Google scopes list.
+	 *
+	 * @param array $scopes Scopes used in Google sign in.
+	 *
+	 * @return array Modified scopes.
+	 */
+	public function wp_google_login_scopes( $scopes ) {
+		$drive_scope = 'https://www.googleapis.com/auth/drive';
+		// Add drive scope if it's not already added.
+		if ( ! in_array( $drive_scope, $scopes, true ) ) {
+			$scopes[] = $drive_scope;
+		}
+
+		return $scopes;
 	}
 
 	/**
@@ -65,11 +110,18 @@ class rtCamp_Google_Embeds {
 			'#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i',
 		);
-		
-		foreach ( $formats as $format ) {
-			$providers[ $format ] = array( get_rest_url( null, 'rt-google-embed/v1/oembed' ), true );
+
+		// Pass current user id in URL so callback can receive it.
+		$user_id = \get_current_user_id();
+		if ( empty( $user_id ) ) {
+			$user_id = 1;
 		}
-	
+		$url = sprintf( 'rt-google-embed/v1/oembed/%s', $user_id );
+
+		foreach ( $formats as $format ) {
+			$providers[ $format ] = array( get_rest_url( null, $url ), true );
+		}
+
 		return $providers;
 	}
 
@@ -158,7 +210,7 @@ class rtCamp_Google_Embeds {
 	 * @return false|string
 	 */
 	public function wpdocs_embed_handler_google_drive( $matches, $attr, $url ) {
-		$thumbnail_url = $this->get_thumbnail_url( $matches[1] );
+		$thumbnail_url = $this->get_thumbnail_url( $matches[1], get_current_user_id() );
 
 		if ( ! $thumbnail_url ) {
 			return '';
@@ -197,10 +249,11 @@ class rtCamp_Google_Embeds {
 	 * If a valid URL isn't provided return a placeholder image URL.
 	 *
 	 * @param string $file_id Google Document File Id.
+	 * @param int    $user_id Currently logged in user id.
 	 *
 	 * @return string|boolean
 	 */
-	private function get_thumbnail_url( $file_id ) {
+	private function get_thumbnail_url( $file_id, $user_id = false ) {
 		if ( empty( $file_id ) ) {
 			return false;
 		}
@@ -220,6 +273,42 @@ class rtCamp_Google_Embeds {
 					return $thumbnail_url;
 				}
 			}
+		}
+
+		// If file is private, we use google drive API key and access token to fetch thumbnail link.
+		if ( empty( $user_id ) || ! defined( 'WP_GOOGLE_DRIVE_API_KEY' ) ) {
+			return false;
+		}
+
+		// Fetch access token from currently logged in user's meta.
+		$access_token = get_user_meta( $user_id, 'rt-google-embeds-access-token', true );
+		if ( empty( $access_token ) ) {
+			return false;
+		}
+
+		// Set API url.
+		$url  = sprintf( 'https://www.googleapis.com/drive/v2/files/%s?key=%s', $file_id, WP_GOOGLE_DRIVE_API_KEY );
+		// Set headers.
+		$args = array(
+			'headers' => array(
+				'Authorization' => sprintf( 'Bearer %s', $access_token ),
+				'Referer'       => $_SERVER['SERVER_NAME'],
+				'Accept'        => 'application/json',
+			)
+		);
+
+		// Call API.
+		$resp = wp_remote_get( $url, $args );
+		// Check if response has json body.
+		if ( empty( $resp['body'] ) ) {
+			return false;
+		}
+
+		// Decode json and get thumbnailLink if exists.
+		// Refer https://developers.google.com/drive/api/v2/reference/files/get.
+		$body = json_decode( $resp['body'], true );
+		if ( ! empty( $body['thumbnailLink'] ) ) {
+			return $body['thumbnailLink'];
 		}
 
 		return false;
@@ -248,7 +337,7 @@ class rtCamp_Google_Embeds {
 		// Route for custom oembed provider for google drive.
 		register_rest_route(
 			'rt-google-embed/v1',
-			'/oembed',
+			'/oembed/(?P<id>\d+)',
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'oembed' ),
@@ -266,6 +355,14 @@ class rtCamp_Google_Embeds {
 	public function oembed( \WP_REST_Request $request ) {
 		// Get id from url query string.
 		$url = $request->get_param( 'url' );
+		// Current user id.
+		$user_id = 1;
+		// Get url params.
+		$url_params = $request->get_url_params();
+		// Fetch user_id from url params.
+		if ( ! empty( $url_params['id'] ) ) {
+			$user_id = intval( $url_params['id'] );
+		}
 
 		$file_id = $this->get_file_id_from_url( $url );
 		if ( empty( $file_id ) ) {
@@ -273,7 +370,7 @@ class rtCamp_Google_Embeds {
 		}
 
 		// Get preview url.
-		$thumbnail_url = $this->get_thumbnail_url( $file_id );
+		$thumbnail_url = $this->get_thumbnail_url( $file_id, $user_id );
 
 		// If permission is not set or invalid url, send 404.
 		if ( empty( $thumbnail_url ) ) {
