@@ -109,6 +109,7 @@ class rtCamp_Google_Embeds {
 			'#https?:\\/\\/docs\\.google\\.com\\/presentation\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i',
+			'#https?:\\/\\/docs\\.google\\.com\\/drawings\\/d\\/(.*)\\/(.*)?#i',
 		);
 
 		// Pass current user id in URL so callback can receive it.
@@ -194,6 +195,14 @@ class rtCamp_Google_Embeds {
 		$gdrive_common_file_oembed_pattern = '#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
 			'rt_google_file_common',
+			$gdrive_common_file_oembed_pattern,
+			array( $this, 'wpdocs_embed_handler_google_drive' )
+		);
+
+		// Common Drawings regex.
+		$gdrive_common_file_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/drawings\\/d\\/(.*)\\/(.*)?#i';
+		wp_embed_register_handler(
+			'rt_google_drawings',
 			$gdrive_common_file_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
@@ -454,15 +463,19 @@ class rtCamp_Google_Embeds {
 	 * @return void
 	 */
 	public function save_thumbnail( $file_id, $contents ) {
-		$uploaddir = wp_upload_dir();
+		$upload_dir = wp_upload_dir();
+		$basedir    = '';
 
-		$uploadpath = $uploaddir['basedir'] . '/cache/wp-google-drive/';
+		if ( ! empty( $upload_dir['basedir'] ) ) {
+			$basedir = $upload_dir['basedir'];
+		}
+		$uploadpath = $basedir . '/cache/wp-google-drive/';
 
 		if ( ! file_exists( $uploadpath ) ) {
 			mkdir( $uploadpath, 0755, true );
 		}
 
-		$uploadfile = $uploaddir['basedir'] . "/cache/wp-google-drive/{$file_id}.png";
+		$uploadfile = $uploadpath . "{$file_id}.png";
 
 		if ( file_exists( $uploadfile ) ) {
 			return;
