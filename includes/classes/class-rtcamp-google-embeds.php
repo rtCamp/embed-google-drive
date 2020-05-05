@@ -96,9 +96,9 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Register custom oembed provider for google drive urls.
-	 * 
+	 *
 	 * @param array $providers Default providers.
-	 * 
+	 *
 	 * @return array Modified providers.
 	 */
 	public function oembed_providers( $providers ) {
@@ -127,7 +127,7 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Define required plugin constants.
-	 * 
+	 *
 	 * @return void
 	 */
 	private function add_plugin_constants() {
@@ -137,7 +137,7 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Loads plugin textdomain.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function load_textdomain() {
@@ -146,7 +146,7 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Registers all supported embeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function register_embeds() {
@@ -261,15 +261,17 @@ class rtCamp_Google_Embeds {
 		// Check if a preview exists for supplied file id.
 		$thumbnail_url = sprintf( 'https://drive.google.com/thumbnail?id=%s&sz=w400-h400', $file_id );
 		$response      = wp_remote_get( $thumbnail_url );
+		$contents      = wp_remote_retrieve_body( $response );
 		if ( ! is_wp_error( $response ) ) {
-			
 			// Check if retrieved content is image and not google sign up page.
 			$content_type = wp_remote_retrieve_header( $response, 'content-type' );
 			if ( false !== strpos( $content_type, 'image/' ) ) {
-
 				// Check if retrieved http code is 200.
 				$status_code = wp_remote_retrieve_response_code( $response );
 				if ( 200 === $status_code ) {
+					// Save the thumbnail.
+					$this->save_thumbnail( $file_id, $contents );
+
 					return $thumbnail_url;
 				}
 			}
@@ -316,7 +318,7 @@ class rtCamp_Google_Embeds {
 
 	/**
 	 * Register endpoints.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function register_routes() {
@@ -333,7 +335,7 @@ class rtCamp_Google_Embeds {
 				],
 			]
 		);
-		
+
 		// Route for custom oembed provider for google drive.
 		register_rest_route(
 			'rt-google-embed/v1',
@@ -441,6 +443,32 @@ class rtCamp_Google_Embeds {
 
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
 		return new \WP_REST_Response( $data, 200 );
+	}
+
+	/**
+	 * Save thumbnail of a doc.
+	 *
+	 * @param string $file_id File ID.
+	 * @param mixed  $contents Contents of file.
+	 *
+	 * @return void
+	 */
+	public function save_thumbnail( $file_id, $contents ) {
+		$uploaddir = wp_upload_dir();
+
+		$uploadpath = $uploaddir['basedir'] . '/cache/wp-google-drive/';
+
+		if ( ! file_exists( $uploadpath ) ) {
+			mkdir( $uploadpath, 0755, true );
+		}
+
+		$uploadfile = $uploaddir['basedir'] . "/cache/wp-google-drive/{$file_id}.png";
+
+		if ( file_exists( $uploadfile ) ) {
+			return;
+		}
+
+		file_put_contents( $uploadfile, $contents ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents -- Safe to write image in the cache directory.
 	}
 }
 
