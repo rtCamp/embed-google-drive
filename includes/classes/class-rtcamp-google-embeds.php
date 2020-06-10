@@ -225,11 +225,32 @@ class rtCamp_Google_Embeds {
 			return '';
 		}
 
+		$matches = array();
+		$file_id = '';
+		$basedir    = '';
+		$baseurl    = '';
+
+		preg_match( '/[-\w]{25,}/', $url, $matches );
+		if ( ! empty( $matches[0] ) ) {
+			$file_id = $matches[0];
+		}
+
+		$upload_dir = wp_upload_dir();
+		$uploadpath = path_join( $upload_dir['basedir'], 'cache/wp-google-drive' );
+
+		$cached_file = path_join( $uploadpath, "{$file_id}.png" );
+		$cached_url  = esc_url_raw( $upload_dir['baseurl'] . "/cache/wp-google-drive/{$file_id}.png" );
+
+		var_dump( $cached_file );
+		var_dump( $cached_url );
+
 		return $this->render_embed(
 			'google-drive-file',
 			array(
 				'drive_file_url' => $url,
 				'thumbnail_url'  => $thumbnail_url,
+				'cached_file'    => $cached_file,
+				'cached_url'     => $cached_url,
 			)
 		);
 	}
@@ -270,10 +291,10 @@ class rtCamp_Google_Embeds {
 		// Check if a preview exists for supplied file id.
 		$thumbnail_url = sprintf( 'https://drive.google.com/thumbnail?id=%s&sz=w400-h400', $file_id );
 		$response      = wp_remote_get( $thumbnail_url );
-		$contents      = wp_remote_retrieve_body( $response );
 		if ( ! is_wp_error( $response ) ) {
 			// Check if retrieved content is image and not google sign up page.
 			$content_type = wp_remote_retrieve_header( $response, 'content-type' );
+			$contents     = wp_remote_retrieve_body( $response );
 			if ( false !== strpos( $content_type, 'image/' ) ) {
 				// Check if retrieved http code is 200.
 				$status_code = wp_remote_retrieve_response_code( $response );
@@ -464,18 +485,15 @@ class rtCamp_Google_Embeds {
 	 */
 	public function save_thumbnail( $file_id, $contents ) {
 		$upload_dir = wp_upload_dir();
-		$basedir    = '';
+		$basedir    = $upload_dir['basedir'];
 
-		if ( ! empty( $upload_dir['basedir'] ) ) {
-			$basedir = $upload_dir['basedir'];
-		}
-		$uploadpath = $basedir . '/cache/wp-google-drive/';
+		$uploadpath = path_join( $upload_dir['basedir'], 'cache/wp-google-drive' );
 
 		if ( ! file_exists( $uploadpath ) ) {
 			mkdir( $uploadpath, 0755, true );
 		}
 
-		$uploadfile = $uploadpath . "{$file_id}.png";
+		$uploadfile = path_join( $uploadpath, "{$file_id}.png" );
 
 		if ( file_exists( $uploadfile ) ) {
 			return;
