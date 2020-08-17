@@ -55,9 +55,9 @@ class rtCamp_Google_Embeds {
 	/**
 	 * Receives the converted token after user logs in via Google account.
 	 *
-	 * @param array  $token      Converted access token.
-	 * @param array  $user_array User information fetched from token.
-	 * @param object $client     Google_Client object in use.
+	 * @param array  $token Converted access token.
+	 * @param array  $user_info User information fetched from token.
+	 * @param object $client Google_Client object in use.
 	 *
 	 * @return void
 	 */
@@ -212,9 +212,9 @@ class rtCamp_Google_Embeds {
 	 * Render preview for provided URL.
 	 *
 	 * @param array  $matches The RegEx matches from the provided regex when calling
-	 *                        wp_embed_register_handler().
-	 * @param array  $attr    Embed attributes.
-	 * @param string $url     The original URL that was matched by the regex.
+	 *                         wp_embed_register_handler().
+	 * @param array  $attr Embed attributes.
+	 * @param string $url The original URL that was matched by the regex.
 	 *
 	 * @return false|string
 	 */
@@ -225,32 +225,20 @@ class rtCamp_Google_Embeds {
 			return '';
 		}
 
-		$matches = array();
 		$file_id = '';
-		$basedir    = '';
-		$baseurl    = '';
+		$basedir = '';
+		$baseurl = '';
 
-		preg_match( '/[-\w]{25,}/', $url, $matches );
-		if ( ! empty( $matches[0] ) ) {
-			$file_id = $matches[0];
-		}
-
-		$upload_dir = wp_upload_dir();
-		$uploadpath = path_join( $upload_dir['basedir'], 'cache/wp-google-drive' );
-
-		$cached_file = path_join( $uploadpath, "{$file_id}.png" );
-		$cached_url  = esc_url_raw( $upload_dir['baseurl'] . "/cache/wp-google-drive/{$file_id}.png" );
-
-		var_dump( $cached_file );
-		var_dump( $cached_url );
+		$file_id = $this->get_file_id_from_url( $url );
+		$cached_data = $this->get_cached_data_from_file_id( $file_id );
 
 		return $this->render_embed(
 			'google-drive-file',
 			array(
 				'drive_file_url' => $url,
 				'thumbnail_url'  => $thumbnail_url,
-				'cached_file'    => $cached_file,
-				'cached_url'     => $cached_url,
+				'cached_file'    => $cached_data['cached_file'],
+				'cached_url'     => $cached_data['cached_url'],
 			)
 		);
 	}
@@ -288,9 +276,17 @@ class rtCamp_Google_Embeds {
 			return false;
 		}
 
+		// Check if a preview file is already cached and return the cached url.
+		$cached_data = $this->get_cached_data_from_file_id( $file_id );
+
+		if ( file_exists( $cached_data['cached_file'] ) ) {
+			return $cached_data['cached_url'];
+		}
+
 		// Check if a preview exists for supplied file id.
 		$thumbnail_url = sprintf( 'https://drive.google.com/thumbnail?id=%s&sz=w400-h400', $file_id );
-		$response      = wp_remote_get( $thumbnail_url );
+		$response = wp_remote_get( $thumbnail_url );
+
 		if ( ! is_wp_error( $response ) ) {
 			// Check if retrieved content is image and not google sign up page.
 			$content_type = wp_remote_retrieve_header( $response, 'content-type' );
@@ -319,14 +315,15 @@ class rtCamp_Google_Embeds {
 		}
 
 		// Set API url.
-		$url  = sprintf( 'https://www.googleapis.com/drive/v2/files/%s?key=%s', $file_id, WP_GOOGLE_DRIVE_API_KEY );
+		$url = sprintf( 'https://www.googleapis.com/drive/v2/files/%s?key=%s', $file_id, WP_GOOGLE_DRIVE_API_KEY );
+
 		// Set headers.
 		$args = array(
 			'headers' => array(
 				'Authorization' => sprintf( 'Bearer %s', $access_token ),
 				'Referer'       => $_SERVER['SERVER_NAME'],
 				'Accept'        => 'application/json',
-			)
+			),
 		);
 
 		// Call API.
@@ -339,8 +336,19 @@ class rtCamp_Google_Embeds {
 		// Decode json and get thumbnailLink if exists.
 		// Refer https://developers.google.com/drive/api/v2/reference/files/get.
 		$body = json_decode( $resp['body'], true );
+
 		if ( ! empty( $body['thumbnailLink'] ) ) {
-			return $body['thumbnailLink'];
+
+			$response = wp_remote_get( $body['thumbnailLink'], $args );
+
+			if ( ! is_wp_error( $response ) ) {
+				$contents     = wp_remote_retrieve_body( $response );
+				if ( false !== strpos( $content_type, 'image/' ) ) {
+					$this->save_thumbnail( $file_id, $contents );
+
+					return $body['thumbnailLink'];
+				}
+			}
 		}
 
 		return false;
@@ -355,15 +363,16 @@ class rtCamp_Google_Embeds {
 		register_rest_route(
 			'rt-google-embed/v1',
 			'/get-preview-url',
-			[
+			array(
 				'methods'  => 'GET',
-				'callback' => [ $this, 'get_thumb_preview' ],
-				'args'     => [
-					'media_id' => [
+				'callback' => array( $this, 'get_thumb_preview' ),
+				'args'     => array(
+					'media_id' => array(
 						'file_id' => true,
-					],
-				],
-			]
+					),
+				),
+				'permission_callback' => '__return_true',
+			)
 		);
 
 		// Route for custom oembed provider for google drive.
@@ -373,6 +382,7 @@ class rtCamp_Google_Embeds {
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'oembed' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 	}
@@ -472,6 +482,7 @@ class rtCamp_Google_Embeds {
 		}
 
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
+
 		return new \WP_REST_Response( $data, 200 );
 	}
 
@@ -500,6 +511,25 @@ class rtCamp_Google_Embeds {
 		}
 
 		file_put_contents( $uploadfile, $contents ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents -- Safe to write image in the cache directory.
+	}
+
+	/**
+	 * Return corresponding path and url of a file
+	 *
+	 * @param string $file_id File ID.
+	 *
+	 * @return array
+	 */
+	public function get_cached_data_from_file_id( $file_id ) {
+		$result = array();
+
+		$upload_dir = wp_upload_dir();
+		$uploadpath = path_join( $upload_dir['basedir'], 'cache/wp-google-drive' );
+
+		$result['cached_file'] = path_join( $uploadpath, "{$file_id}.png" );
+		$result['cached_url'] = esc_url_raw( $upload_dir['baseurl'] . "/cache/wp-google-drive/{$file_id}.png" );
+
+		return $result;
 	}
 }
 
