@@ -342,6 +342,7 @@ class rtCamp_Google_Embeds {
 			$response = wp_remote_get( $body['thumbnailLink'], $args );
 
 			if ( ! is_wp_error( $response ) ) {
+			    $content_type = wp_remote_retrieve_header( $response, 'content-type' );
 				$contents     = wp_remote_retrieve_body( $response );
 				if ( false !== strpos( $content_type, 'image/' ) ) {
 					$this->save_thumbnail( $file_id, $contents );
