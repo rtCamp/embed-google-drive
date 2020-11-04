@@ -5,6 +5,19 @@ rtCamp Google Embeds
 
 This plugin allows adding preview for your Google Drive Documents right in your editor.
 
+## Setup
+1. Create a project from [Google Developers Console](https://console.developers.google.com/apis/dashboard) if none exists.
+2. Click on **ENABLE APIS AND SERVICES** 
+3. In the displayed list of available APIs, click the **Drive API** link and click **Enable API**.
+4. Go to **Credentials** tab, then create credential for **API key**.
+5. This will give you **Drive API KEY**.
+
+Input this value in `wp-config.php` using the following code snippet:
+```php
+define( 'WP_GOOGLE_DRIVE_API_KEY', 'YOUR_API_KEY' );
+```
+https://developers.google.com/drive/api/v3/enable-drive-api
+
 ## Development Notes
 
 ##### Please run following commands from the root directory.
