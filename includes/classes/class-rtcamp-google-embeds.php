@@ -64,6 +64,7 @@ class rtCamp_Google_Embeds {
 			'#https?:\\/\\/docs\\.google\\.com\\/presentation\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/open\\?id\\=(.*)?#i',
 			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i',
+			'#https?:\\/\\/docs\\.google\\.com\\/drawings\\/d\\/(.*)\\/(.*)?#i',
 		);
 		
 		foreach ( $formats as $format ) {
@@ -143,6 +144,14 @@ class rtCamp_Google_Embeds {
 		wp_embed_register_handler(
 			'rt_google_file_common',
 			$gdrive_common_file_oembed_pattern,
+			array( $this, 'wpdocs_embed_handler_google_drive' )
+		);
+
+		// Google drawings regex.
+		$gdrawings_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/drawings\\/d\\/(.*)\\/(.*)?#i';
+		wp_embed_register_handler(
+			'rt_google_drawings',
+			$gdrawings_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
 	}
