@@ -3,7 +3,9 @@ rtCamp Google Embeds
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-This plugin allows adding preview for your Google Drive Documents right in your editor.
+Embed a link and preview of Google Drive Documents by pasting a shared document link into the editor.
+
+No configuration is required.
 
 ## Development Notes
 

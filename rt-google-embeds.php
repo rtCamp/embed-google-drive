@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: rtCamp Google Embeds
- * Description: Allows adding preview for your Google Drive Documents right in your editor.
+ * Plugin Name: WP Google Drive.
+ * Description: Embed a link and preview of Google Drive Documents by pasting a shared document link into the editor.
  * Plugin URI: https://github.com/rtCamp/rt-google-embeds
- * Version: 0.1.0
+ * Version: 1.0
  * Author: rtCamp
  * Text Domain: rt-google-embeds
  * Author URI: https://rtcamp.com/
