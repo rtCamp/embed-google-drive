@@ -80,7 +80,7 @@ class rtCamp_Google_Embeds {
 	 * @return void
 	 */
 	private function add_plugin_constants() {
-		define( 'RT_GOOGLE_EMBEDS_VERSION', '0.1.0' );
+		define( 'RT_GOOGLE_EMBEDS_VERSION', '1.0' );
 		define( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR', plugin_dir_path( RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
 	}
 
@@ -251,6 +251,7 @@ class rtCamp_Google_Embeds {
 						'file_id' => true,
 					],
 				],
+				'permission_callback' => '__return_true',
 			]
 		);
 		
@@ -261,6 +262,7 @@ class rtCamp_Google_Embeds {
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'oembed' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 	}
