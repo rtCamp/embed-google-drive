@@ -39,7 +39,7 @@ msgid "Open the Shared Document"
 msgstr ""
 
 #: templates/embeds/google-drive-file.php:15
-msgid "Open Shared Document."
+msgid "Open Shared Document"
 msgstr ""
 
 #: templates/embeds/google-drive-file.php:17
