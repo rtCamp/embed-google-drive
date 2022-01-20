@@ -1,4 +1,4 @@
-=== Google Drive WP ===
+=== Embed Google Drive ===
 Contributors: rtCamp
 Donate link: https://rtcamp.com/
 Tags: Google Drive, embed, spreadsheet, document, drawing
@@ -23,7 +23,7 @@ No configuration is required.
 
 == Installation ==
 
-1. Upload `google-drive-wp` to the `/wp-content/plugins/` directory
+1. Upload `embed-google-drive` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Paste a shared Google Drive document link into the WordPress editor.
 
@@ -31,17 +31,17 @@ No configuration is required.
 
 = Reporting a bug 🐞 =
 
-Before creating a new issue, do browse through the [existing issues](https://github.com/rtCamp/google-drive-wp/issues) for resolution or upcoming fixes.
+Before creating a new issue, do browse through the [existing issues](https://github.com/rtCamp/embed-google-drive/issues) for resolution or upcoming fixes.
 
-If you still need to [log an issue](https://github.com/rtCamp/google-drive-wp/issues/new), making sure to include as much detail as you can, including clear steps to reproduce the issue, if possible.
+If you still need to [log an issue](https://github.com/rtCamp/embed-google-drive/issues/new), making sure to include as much detail as you can, including clear steps to reproduce the issue, if possible.
 
 = Creating a pull request =
 
-Want to contribute a new feature? Start a conversation by [logging an issue](https://github.com/rtCamp/google-drive-wp/issues).
+Want to contribute a new feature? Start a conversation by [logging an issue](https://github.com/rtCamp/embed-google-drive/issues).
 
 Once you're ready to send a pull request, please run through the following checklist:
 
-1. Browse through the [existing issues](https://github.com/rtCamp/google-drive-wp/issues) for anything related to what you want to work on. If you don't find any related issues, open a new one.
+1. Browse through the [existing issues](https://github.com/rtCamp/embed-google-drive/issues) for anything related to what you want to work on. If you don't find any related issues, open a new one.
 
 2. Fork this repository.
 
