@@ -5,7 +5,7 @@ Tags: Google Drive, embed, spreadsheet, document, drawing
 Requires at least: 5.5
 Tested up to: 5.9
 Requires PHP: 7.3
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,10 +56,13 @@ Once you're ready to send a pull request, please run through the following check
 
 == Changelog ==
 
+= 1.0.1 =
+* Jetpack compatibility.
+
 = 1.0 =
 * Initial release.
 
 == Upgrade Notice ==
 
-= 1.0 =
-* Initial release.
+= 1.0.1 =
+* Jetpack compatibility.
