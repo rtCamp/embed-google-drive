@@ -57,6 +57,12 @@ class rtCamp_Google_Embeds {
 	 * @return array Modified providers.
 	 */
 	public function oembed_providers( $providers ) {
+		global $wp_rewrite;
+
+		if ( is_null( $wp_rewrite ) ) {
+			return $providers;
+		}
+		
 		$formats = array(
 			'#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/docs\\.google\\.com\\/forms\\/d\\/(.*)\\/(.*)?#i',
