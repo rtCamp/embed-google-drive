@@ -47,6 +47,8 @@
  
      // A success notice should show up
      page.locator(".components-snackbar");
+
+     await page.screenshot({ path: "uploads/viewpost.png" });
  
      await page.click('role=link[name="View Post"i] >> nth=1');
  

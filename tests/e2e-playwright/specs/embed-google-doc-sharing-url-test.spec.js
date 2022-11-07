@@ -45,6 +45,8 @@ test.describe("Embeds google doc sharing URL preview test", () => {
     //Double check, click again on publish button
     await page.click(".editor-post-publish-button");
 
+    await page.screenshot({ path: "uploads/viewpost2.png" });
+
     // A success notice should show up
     page.locator(".components-snackbar");
 
