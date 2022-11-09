@@ -4,6 +4,9 @@
 const { test, expect } = require("@wordpress/e2e-test-utils-playwright");
 
 test.describe("Embeds google doc sharing URL preview test", () => {
+  test.afterEach(async ({ requestUtils }) => {
+		await requestUtils.deleteAllPosts()
+	})
   test("Able to add the doc link and preview should be visible", async ({
     page,
     admin,
@@ -36,22 +39,5 @@ test.describe("Embeds google doc sharing URL preview test", () => {
     expect(frameloc.locator("a[title='Open the Shared Document']")).not.toBe(
       null
     );
-
-    // Publish a page and validate.
-
-    //Click on publish button
-    await page.click(".editor-post-publish-panel__toggle");
-
-    //Double check, click again on publish button
-    await page.click(".editor-post-publish-button");
-
-    await page.screenshot({ path: "uploads/viewpost2.png" });
-
-    // A success notice should show up
-    page.locator(".components-snackbar");
-
-    await page.click('role=link[name="View Post"i] >> nth=1');
-
-    expect(page.locator("a[title='Open the Shared Document']")).not.toBe(null);
   });
 });
