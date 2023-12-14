@@ -3,9 +3,9 @@ Contributors: rtCamp
 Donate link: https://rtcamp.com/
 Tags: Google Drive, embed, spreadsheet, document, drawing
 Requires at least: 5.5
-Tested up to: 6.1
-Requires PHP: 7.3
-Stable tag: 1.0
+Tested up to: 6.4.2
+Requires PHP: 8.0+
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,7 +69,7 @@ Once you're ready to send a pull request, please run through the following check
 * Jetpack compatibility.
 
 = 1.1 =
-* Plugin tested upto WordPress 6.4.2
+* Plugin tested up to WordPress 6.4.2
 * PHP Version updated to 8.0
 * Fixed PHP Coding Standards issues
 * Plugin is VIP compatible
