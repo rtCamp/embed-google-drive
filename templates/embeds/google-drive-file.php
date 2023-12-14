@@ -5,10 +5,7 @@
  * @package rt-google-embeds
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	// prevent direct access to this file.
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 if ( ! isset( $drive_file_url ) || ! isset( $thumbnail_url ) ) {
 	return;

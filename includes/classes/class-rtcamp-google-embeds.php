@@ -229,7 +229,13 @@ class RtCamp_Google_Embeds {
 
 		// Check if a preview exists for supplied file id.
 		$thumbnail_url = sprintf( 'https://drive.google.com/thumbnail?id=%s&sz=w400-h400', $file_id );
-		$response      = wp_remote_get( $thumbnail_url );
+
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$response = vip_safe_wp_remote_get( $thumbnail_url );
+		} else {
+			$response = wp_remote_get( $thumbnail_url );
+		}
+
 		if ( ! is_wp_error( $response ) ) {
 
 			// Check if retrieved content is image and not google sign up page.
@@ -376,6 +382,7 @@ class RtCamp_Google_Embeds {
 
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
 		return new WP_REST_Response( $data, 200 );
+
 	}
 
 }
