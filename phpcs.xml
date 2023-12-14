@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="rtCamp Google Embeds">
+<ruleset name="Embed Google Drive">
 	<description>A custom set of rules to check for a rtCamp Google Embeds plugin</description>
 
 	<arg name="extensions" value="php"/>
