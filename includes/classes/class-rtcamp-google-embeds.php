@@ -94,7 +94,7 @@ class RtCamp_Google_Embeds {
 	 */
 	public function load_textdomain() {
 
-		load_plugin_textdomain( 'embed-google-drive', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
+		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
 
 	}
 
