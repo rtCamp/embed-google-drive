@@ -31,7 +31,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return RtCamp_Google_Embeds.
 	 */
-	public static function instance(): RtCamp_Google_Embeds {
+	public static function instance() {
 
 		if ( null === self::$instance ) {
 			self::$instance = new self();
@@ -62,11 +62,11 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return array Modified providers.
 	 */
-	public function oembed_providers( array $providers ): array {
+	public function oembed_providers( $providers ) {
 
 		global $wp_rewrite;
 
-		if ( is_null( $wp_rewrite ) ) {
+		if ( null === $wp_rewrite ) {
 			return $providers;
 		}
 
@@ -92,7 +92,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return void
 	 */
-	public function load_textdomain(): void {
+	public function load_textdomain() {
 
 		load_plugin_textdomain( 'embed-google-drive', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
 
@@ -103,7 +103,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return void
 	 */
-	public function register_embeds(): void {
+	public function register_embeds() {
 
 		// Google Docs regex.
 		$gdoc_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i';
@@ -173,7 +173,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return false|string
 	 */
-	public function wpdocs_embed_handler_google_drive( array $matches, array $attr, string $url ): false|string {
+	public function wpdocs_embed_handler_google_drive( $matches, $attr, $url ) {
 
 		$thumbnail_url = $this->get_thumbnail_url( $matches[1] );
 
@@ -199,7 +199,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return false|string
 	 */
-	public function render_embed( string $type, array $data ): false|string {
+	public function render_embed( $type, $data ) {
 
 		ob_start();
 		$template = sprintf( 'templates/embeds/%s.php', $type );
@@ -221,7 +221,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return string|boolean
 	 */
-	private function get_thumbnail_url( string $file_id ): string|bool {
+	private function get_thumbnail_url( $file_id ) {
 
 		if ( empty( $file_id ) ) {
 			return false;
@@ -259,7 +259,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return void
 	 */
-	public function register_routes(): void {
+	public function register_routes() {
 
 		register_rest_route(
 			'rt-google-embed/v1',
@@ -296,7 +296,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function oembed( WP_REST_Request $request ): WP_REST_Response {
+	public function oembed( $request ) {
 
 		// Get id from url query string.
 		$url = $request->get_param( 'url' );
@@ -352,7 +352,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return bool|string Returns false or ID.
 	 */
-	public function get_file_id_from_url( string $url ): bool|string {
+	public function get_file_id_from_url( $url ) {
 
 		$matches = array();
 		preg_match( '/[-\w]{25,}/', $url, $matches );
@@ -371,7 +371,7 @@ class RtCamp_Google_Embeds {
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function get_thumb_preview( WP_REST_Request $request ): WP_REST_Response {
+	public function get_thumb_preview( $request ) {
 
 		$url = $request->get_param( 'url' );
 
