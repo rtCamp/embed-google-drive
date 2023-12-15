@@ -23,7 +23,17 @@ Embed a link and preview of Google Drive Documents by pasting a shared document 
    <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/56588503/290550134-147a5435-5458-4abf-bf74-4c6990da2da3.png" />
 3. Activate the plugin through the 'Plugins' menu in WordPress
    <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/56588503/290550390-6ee9cac6-0b57-460d-bd53-68c4cf376f68.png" />
-3. Paste a shared Google Drive document link into the WordPress editor.
+
+## How to use
+1. Copy the URL of drive document which you want to embed. <b>Note: The document must be shared with anyone with the link.</b>
+2. Create new post/page or edit existing one.
+3. Paste the URL in the editor. It will automatically embed the document.
+   ![image](https://github.com/rtCamp/embed-google-drive/assets/56588503/546fbdcd-36dd-4c40-9249-4a9bdca375be)
+   ![image](https://github.com/rtCamp/embed-google-drive/assets/56588503/77b84546-c5f8-4d3b-a613-ae37ed9d29f8)
+   ![image](https://github.com/rtCamp/embed-google-drive/assets/56588503/57c5e5bb-7df2-469d-9e22-29a3e1655dc6)
+
+## Video Guide
+https://github.com/rtCamp/embed-google-drive/assets/56588503/d376c750-c0f8-4bfe-8b23-79ae1f070f46
 
 ## Development Notes
 
