@@ -13,23 +13,23 @@ use WP_REST_Response;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class RtCamp_Google_Embeds
+ * Class rtCamp_Google_Embeds
  *
  * @package rt-google-embeds
  */
-class RtCamp_Google_Embeds {
+class rtCamp_Google_Embeds {
 
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var RtCamp_Google_Embeds
+	 * @var rtCamp_Google_Embeds
 	 */
 	protected static $instance = null;
 
 	/**
-	 * RtCamp_Google_Embeds Plugin Instance.
+	 * rtCamp_Google_Embeds Plugin Instance.
 	 *
-	 * @return RtCamp_Google_Embeds.
+	 * @return rtCamp_Google_Embeds.
 	 */
 	public static function instance() {
 
@@ -42,7 +42,7 @@ class RtCamp_Google_Embeds {
 	}
 
 	/**
-	 * RtCamp_Google_Embeds constructor.
+	 * rtCamp_Google_Embeds constructor.
 	 */
 	public function __construct() {
 
@@ -204,8 +204,8 @@ class RtCamp_Google_Embeds {
 		ob_start();
 		$template = sprintf( 'templates/embeds/%s.php', $type );
 
-		if ( ! empty( $data ) ) {
-			extract( $data ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- Used as an exception as there is no better alternative.
+		if ( ! empty( $data ) && is_array( $data ) ) {
+			extract( $data, EXTR_OVERWRITE );
 		}
 
 		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
@@ -388,4 +388,4 @@ class RtCamp_Google_Embeds {
 }
 
 // Initialize the class.
-RtCamp_Google_Embeds::instance();
+rtCamp_Google_Embeds::instance();

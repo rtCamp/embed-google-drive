@@ -26,6 +26,6 @@ if ( ! defined( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR' ) ) {
 	define( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR', plugin_dir_path( RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
 }
 
-if ( ! class_exists( 'RtCamp_Google_Embeds' ) ) {
+if ( ! class_exists( 'RT_Google_Embeds\rtCamp_Google_Embeds' ) ) {
 	require_once RT_GOOGLE_EMBEDS_PLUGIN_DIR . '/includes/classes/class-rtcamp-google-embeds.php';
 }
