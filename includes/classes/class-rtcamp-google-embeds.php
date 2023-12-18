@@ -7,6 +7,9 @@
 
 namespace RT_Google_Embeds;
 
+use WP_REST_Request;
+use WP_REST_Response;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -29,40 +32,44 @@ class rtCamp_Google_Embeds {
 	 * @return rtCamp_Google_Embeds.
 	 */
 	public static function instance() {
-		if ( is_null( self::$instance ) ) {
+
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
+
 	}
 
 	/**
 	 * rtCamp_Google_Embeds constructor.
 	 */
 	public function __construct() {
-		$this->add_plugin_constants();
+
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init', array( $this, 'register_embeds' ) );
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
 		// Register custom oembed provider for google drive urls.
 		add_filter( 'oembed_providers', array( $this, 'oembed_providers' ) );
+
 	}
 
 	/**
 	 * Register custom oembed provider for google drive urls.
-	 * 
+	 *
 	 * @param array $providers Default providers.
-	 * 
+	 *
 	 * @return array Modified providers.
 	 */
 	public function oembed_providers( $providers ) {
+
 		global $wp_rewrite;
 
-		if ( is_null( $wp_rewrite ) ) {
+		if ( null === $wp_rewrite ) {
 			return $providers;
 		}
-		
+
 		$formats = array(
 			'#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/docs\\.google\\.com\\/forms\\/d\\/(.*)\\/(.*)?#i',
@@ -72,39 +79,32 @@ class rtCamp_Google_Embeds {
 			'#https?:\\/\\/drive\\.google\\.com\\/file\\/d\\/(.*)\\/(.*)?#i',
 			'#https?:\\/\\/docs\\.google\\.com\\/drawings\\/d\\/(.*)\\/(.*)?#i',
 		);
-		
+
 		foreach ( $formats as $format ) {
 			$providers[ $format ] = array( get_rest_url( null, 'rt-google-embed/v1/oembed' ), true );
 		}
-	
+
 		return $providers;
 	}
 
 	/**
-	 * Define required plugin constants.
-	 * 
-	 * @return void
-	 */
-	private function add_plugin_constants() {
-		define( 'RT_GOOGLE_EMBEDS_VERSION', '1.0' );
-		define( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR', plugin_dir_path( RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
-	}
-
-	/**
-	 * Loads plugin textdomain.
-	 * 
+	 * Loads plugin text-domain.
+	 *
 	 * @return void
 	 */
 	public function load_textdomain() {
+
 		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
+
 	}
 
 	/**
 	 * Registers all supported embeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function register_embeds() {
+
 		// Google Docs regex.
 		$gdoc_oembed_pattern = '#https?:\\/\\/docs\\.google\\.com\\/document\\/d\\/(.*)\\/(.*)?#i';
 		wp_embed_register_handler(
@@ -160,6 +160,7 @@ class rtCamp_Google_Embeds {
 			$gdrawings_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
+
 	}
 
 	/**
@@ -173,6 +174,7 @@ class rtCamp_Google_Embeds {
 	 * @return false|string
 	 */
 	public function wpdocs_embed_handler_google_drive( $matches, $attr, $url ) {
+
 		$thumbnail_url = $this->get_thumbnail_url( $matches[1] );
 
 		if ( ! $thumbnail_url ) {
@@ -186,6 +188,7 @@ class rtCamp_Google_Embeds {
 				'thumbnail_url'  => $thumbnail_url,
 			)
 		);
+
 	}
 
 	/**
@@ -197,15 +200,18 @@ class rtCamp_Google_Embeds {
 	 * @return false|string
 	 */
 	public function render_embed( $type, $data ) {
+
 		ob_start();
 		$template = sprintf( 'templates/embeds/%s.php', $type );
+
 		if ( ! empty( $data ) && is_array( $data ) ) {
 			extract( $data, EXTR_OVERWRITE );
 		}
-		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore
-		$embed_markup = ob_get_clean();
 
-		return $embed_markup;
+		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+
+		return ob_get_clean();
+
 	}
 
 	/**
@@ -216,18 +222,25 @@ class rtCamp_Google_Embeds {
 	 * @return string|boolean
 	 */
 	private function get_thumbnail_url( $file_id ) {
+
 		if ( empty( $file_id ) ) {
 			return false;
 		}
 
 		// Check if a preview exists for supplied file id.
 		$thumbnail_url = sprintf( 'https://drive.google.com/thumbnail?id=%s&sz=w400-h400', $file_id );
-		$response      = wp_remote_get( $thumbnail_url );
+
+		if ( function_exists( 'vip_safe_wp_remote_get' ) ) {
+			$response = vip_safe_wp_remote_get( $thumbnail_url );
+		} else {
+			$response = wp_remote_get( $thumbnail_url );
+		}
+
 		if ( ! is_wp_error( $response ) ) {
-			
+
 			// Check if retrieved content is image and not google sign up page.
 			$content_type = wp_remote_retrieve_header( $response, 'content-type' );
-			if ( false !== strpos( $content_type, 'image/' ) ) {
+			if ( str_contains( $content_type, 'image/' ) ) {
 
 				// Check if retrieved http code is 200.
 				$status_code = wp_remote_retrieve_response_code( $response );
@@ -238,55 +251,59 @@ class rtCamp_Google_Embeds {
 		}
 
 		return false;
+
 	}
 
 	/**
 	 * Register endpoints.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function register_routes() {
+
 		register_rest_route(
 			'rt-google-embed/v1',
 			'/get-preview-url',
-			[
-				'methods'  => 'GET',
-				'callback' => [ $this, 'get_thumb_preview' ],
-				'args'     => [
-					'media_id' => [
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_thumb_preview' ),
+				'args'                => array(
+					'media_id' => array(
 						'file_id' => true,
-					],
-				],
+					),
+				),
 				'permission_callback' => '__return_true',
-			]
+			)
 		);
-		
+
 		// Route for custom oembed provider for google drive.
 		register_rest_route(
 			'rt-google-embed/v1',
 			'/oembed',
 			array(
-				'methods'  => 'GET',
-				'callback' => array( $this, 'oembed' ),
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'oembed' ),
 				'permission_callback' => '__return_true',
 			)
 		);
+
 	}
 
 	/**
 	 * REST API callback to get drive preview URL on block editor.
 	 *
-	 * @param \WP_REST_Request $request REST request Instance.
+	 * @param WP_REST_Request $request REST request Instance.
 	 *
-	 * @return \WP_REST_Response
+	 * @return WP_REST_Response
 	 */
-	public function oembed( \WP_REST_Request $request ) {
+	public function oembed( $request ) {
+
 		// Get id from url query string.
 		$url = $request->get_param( 'url' );
 
 		$file_id = $this->get_file_id_from_url( $url );
 		if ( empty( $file_id ) ) {
-			return new \WP_REST_Response( array(), 404 );
+			return new WP_REST_Response( array(), 404 );
 		}
 
 		// Get preview url.
@@ -294,7 +311,7 @@ class rtCamp_Google_Embeds {
 
 		// If permission is not set or invalid url, send 404.
 		if ( empty( $thumbnail_url ) ) {
-			return new \WP_REST_Response( array(), 404 );
+			return new WP_REST_Response( array(), 404 );
 		}
 
 		// Data to send as response.
@@ -324,7 +341,8 @@ class rtCamp_Google_Embeds {
 
 		$data['thumbnail_url'] = $thumbnail_url;
 
-		return new \WP_REST_Response( $data, 200 );
+		return new WP_REST_Response( $data, 200 );
+
 	}
 
 	/**
@@ -335,6 +353,7 @@ class rtCamp_Google_Embeds {
 	 * @return bool|string Returns false or ID.
 	 */
 	public function get_file_id_from_url( $url ) {
+
 		$matches = array();
 		preg_match( '/[-\w]{25,}/', $url, $matches );
 		if ( empty( $matches[0] ) ) {
@@ -342,26 +361,30 @@ class rtCamp_Google_Embeds {
 		}
 
 		return $matches[0];
+
 	}
 
 	/**
 	 * REST API callback to get drive preview URL.
 	 *
-	 * @param \WP_REST_Request $request REST Instance.
+	 * @param WP_REST_Request $request REST Instance.
 	 *
-	 * @return \WP_REST_Response
+	 * @return WP_REST_Response
 	 */
-	public function get_thumb_preview( \WP_REST_Request $request ) {
+	public function get_thumb_preview( $request ) {
+
 		$url = $request->get_param( 'url' );
 
 		$file_id = $this->get_file_id_from_url( $url );
 		if ( empty( $file_id ) ) {
-			return new \WP_REST_Response( array(), 404 );
+			return new WP_REST_Response( array(), 404 );
 		}
 
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
-		return new \WP_REST_Response( $data, 200 );
+		return new WP_REST_Response( $data, 200 );
+
 	}
+
 }
 
 // Initialize the class.

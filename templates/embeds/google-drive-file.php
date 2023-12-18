@@ -5,10 +5,12 @@
  * @package rt-google-embeds
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	// prevent direct access to this file.
-	exit;
+defined( 'ABSPATH' ) || exit;
+
+if ( ! isset( $drive_file_url ) || ! isset( $thumbnail_url ) ) {
+	return;
 }
+
 ?>
 <div style="border: 1px solid #000; text-align: center;">
 	<a href="<?php echo esc_url( $drive_file_url ); ?>" title="<?php esc_attr_e( 'Open the Shared Document', 'rt-google-embeds' ); ?>" target="_blank" rel="noopener noreferrer" style="color: #cd2653;">
