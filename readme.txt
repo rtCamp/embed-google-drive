@@ -41,9 +41,6 @@ No configuration is required.
    ![image](https://github.com/rtCamp/embed-google-drive/assets/56588503/77b84546-c5f8-4d3b-a613-ae37ed9d29f8)
    ![image](https://github.com/rtCamp/embed-google-drive/assets/56588503/57c5e5bb-7df2-469d-9e22-29a3e1655dc6)
 
-https://github.com/rtCamp/embed-google-drive/assets/56588503/d376c750-c0f8-4bfe-8b23-79ae1f070f46
-
-
 == Frequently Asked Questions ==
 
 = Reporting a bug 🐞 =
