@@ -19,7 +19,7 @@ if ( ! defined( 'RT_GOOGLE_EMBEDS_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'RT_GOOGLE_EMBEDS_VERSION' ) ) {
-	define( 'RT_GOOGLE_EMBEDS_VERSION', '1.2' );
+	define( 'RT_GOOGLE_EMBEDS_VERSION', '1.1' );
 }
 
 if ( ! defined( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR' ) ) {

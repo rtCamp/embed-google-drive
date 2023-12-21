@@ -7,11 +7,11 @@ Embed a link and preview of Google Drive Documents by pasting a shared document 
 
 **Requires at least:** 5.5
 
-**Tested up to:** 6.4
+**Tested up to:** 6.4.2
 
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
 
-**Requires PHP:** 8.0+
+**Requires PHP:** 7.4+
 
 ## Installation
 
