@@ -38,7 +38,6 @@ class rtCamp_Google_Embeds {
 		}
 
 		return self::$instance;
-
 	}
 
 	/**
@@ -52,7 +51,6 @@ class rtCamp_Google_Embeds {
 
 		// Register custom oembed provider for google drive urls.
 		add_filter( 'oembed_providers', array( $this, 'oembed_providers' ) );
-
 	}
 
 	/**
@@ -95,7 +93,6 @@ class rtCamp_Google_Embeds {
 	public function load_textdomain() {
 
 		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
-
 	}
 
 	/**
@@ -160,7 +157,6 @@ class rtCamp_Google_Embeds {
 			$gdrawings_oembed_pattern,
 			array( $this, 'wpdocs_embed_handler_google_drive' )
 		);
-
 	}
 
 	/**
@@ -188,7 +184,6 @@ class rtCamp_Google_Embeds {
 				'thumbnail_url'  => $thumbnail_url,
 			)
 		);
-
 	}
 
 	/**
@@ -211,7 +206,6 @@ class rtCamp_Google_Embeds {
 		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 
 		return ob_get_clean();
-
 	}
 
 	/**
@@ -251,7 +245,6 @@ class rtCamp_Google_Embeds {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -286,7 +279,6 @@ class rtCamp_Google_Embeds {
 				'permission_callback' => '__return_true',
 			)
 		);
-
 	}
 
 	/**
@@ -342,7 +334,6 @@ class rtCamp_Google_Embeds {
 		$data['thumbnail_url'] = $thumbnail_url;
 
 		return new WP_REST_Response( $data, 200 );
-
 	}
 
 	/**
@@ -361,7 +352,6 @@ class rtCamp_Google_Embeds {
 		}
 
 		return $matches[0];
-
 	}
 
 	/**
@@ -382,9 +372,7 @@ class rtCamp_Google_Embeds {
 
 		$data['preview_url'] = $this->get_thumbnail_url( $file_id );
 		return new WP_REST_Response( $data, 200 );
-
 	}
-
 }
 
 // Initialize the class.
