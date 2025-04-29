@@ -5,6 +5,35 @@ Embed Google Drive
 
 Embed a link and preview of Google Drive Documents by pasting a shared document link into the editor.
 
+#### Supported Google Drive Embeds
+
+This plugin supports auto-embedding various types of Google Drive content. Just paste a public or shareable URL directly into your editor.
+
+> **Note:** The trailing part of the URL (like `/edit`, `/view`, or `/viewform`) is optional. These are commonly included when users copy URLs directly from the browser, and the embed handler accepts them.
+
+##### ✅ Supported Embed Types and Example URLs
+
+- **Google Docs**  
+  Example: `https://docs.google.com/document/d/FILE_ID/edit`
+
+- **Google Forms**  
+  Example: `https://docs.google.com/forms/d/FILE_ID/viewform`
+
+- **Google Sheets**  
+  Example: `https://docs.google.com/spreadsheets/d/FILE_ID/edit`
+
+- **Google Slides**  
+  Example: `https://docs.google.com/presentation/d/FILE_ID/edit`
+
+- **Google Drawings**  
+  Example: `https://docs.google.com/drawings/d/FILE_ID/edit`
+
+- **Google Drive files (generic)**  
+  Example: `https://drive.google.com/file/d/FILE_ID/view`
+
+- **Google Drive shared links by ID**  
+  Example: `https://drive.google.com/open?id=FILE_ID`
+
 **Requires at least:** 5.5
 
 **Tested up to:** 6.7.1
