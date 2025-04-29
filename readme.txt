@@ -3,9 +3,9 @@ Contributors: rtCamp, sh4lin
 Donate link: https://rtcamp.com/
 Tags: Google Drive, embed, spreadsheet, document, drawing
 Requires at least: 5.5
-Tested up to: 6.7.1
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,10 @@ Once you're ready to send a pull request, please run through the following check
 
 == Changelog ==
 
+= 1.2.1 =
+* Chore: Plugin tested up to WordPress 6.8
+* Chore: Doc update
+
 = 1.2 =
 * Chore: Plugin tested up to WordPress 6.7.1
 * Chore: Doc update
@@ -87,12 +91,10 @@ Once you're ready to send a pull request, please run through the following check
 
 == Upgrade Notice ==
 
+= 1.2.1 =
+* Chore: Plugin tested up to WordPress 6.8
+* Chore: Doc update
+
 = 1.2 =
 * Chore: Plugin tested up to WordPress 6.7.1
 * Chore: Doc update
-
-= 1.1 =
-* Plugin tested upto WordPress 6.4.2
-* PHP Version updated to 8.0
-* Fixed PHP Coding Standards issues
-* Plugin is VIP compatible
