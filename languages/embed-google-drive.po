@@ -1,0 +1,52 @@
+# Copyright (C) 2025 rtCamp
+# This file is distributed under the same license as the Embed Google Drive plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Embed Google Drive 1.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/embed-google-drive\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-05-23T07:58:33+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: embed-google-drive\n"
+
+#. Plugin Name of the plugin
+#: embed-google-drive.php
+msgid "Embed Google Drive"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: embed-google-drive.php
+msgid "https://github.com/rtCamp/embed-google-drive"
+msgstr ""
+
+#. Description of the plugin
+#: embed-google-drive.php
+msgid "Embed a link and preview of Google Drive Documents by pasting a shared document link into the editor."
+msgstr ""
+
+#. Author of the plugin
+#: embed-google-drive.php
+msgid "rtCamp"
+msgstr ""
+
+#. Author URI of the plugin
+#: embed-google-drive.php
+msgid "https://rtcamp.com/"
+msgstr ""
+
+#: templates/embeds/google-drive-file.php:16
+msgid "Open the Shared Document"
+msgstr ""
+
+#: templates/embeds/google-drive-file.php:17
+msgid "Open Shared Document"
+msgstr ""
+
+#: templates/embeds/google-drive-file.php:19
+msgid "Shared Document Preview"
+msgstr ""
