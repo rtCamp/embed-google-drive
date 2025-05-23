@@ -5,11 +5,11 @@
  * Plugin URI: https://github.com/rtCamp/embed-google-drive
  * Version: 1.2.1
  * Author: rtCamp
- * Text Domain: rt-google-embeds
+ * Text Domain: embed-google-drive
  * Author URI: https://rtcamp.com/
  * Domain Path: /languages/
  *
- * @package rt-google-embeds
+ * @package embed-google-drive
  */
 
 defined( 'ABSPATH' ) || exit;

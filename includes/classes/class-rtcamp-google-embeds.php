@@ -2,7 +2,7 @@
 /**
  * Plugin Main Class
  *
- * @package rt-google-embeds
+ * @package embed-google-drive
  */
 
 namespace RT_Google_Embeds;
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class rtCamp_Google_Embeds
  *
- * @package rt-google-embeds
+ * @package embed-google-drive
  */
 class rtCamp_Google_Embeds {
 
@@ -92,7 +92,7 @@ class rtCamp_Google_Embeds {
 	 */
 	public function load_textdomain() {
 
-		load_plugin_textdomain( 'rt-google-embeds', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
+		load_plugin_textdomain( 'embed-google-drive', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
 	}
 
 	/**

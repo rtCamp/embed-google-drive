@@ -1,13 +1,13 @@
 {
-	"name": "rt-google-embed",
+	"name": "embed-google-drive",
 	"version": "0.1.0",
 	"description": "Allows adding preview for your Google Drive Documents right in your editor.",
 	"author": "rtCamp",
 	"license": "GPL-2.0",
 	"scripts": {
-		"language:make-po": "wp i18n make-pot . --exclude=\"build\" languages/rt-google-embeds.po",
+		"language:make-po": "wp i18n make-pot . --exclude=\"build\" languages/embed-google-drive.po",
 		"language": "run-s \"language:*\"",
-		"zip": "wp dist-archive . rt-google-embeds.zip"
+		"zip": "wp dist-archive . embed-google-drive.zip"
 	},
 	"devDependencies": {
 		"npm-run-all": "^4.1.5"
