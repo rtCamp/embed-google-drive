@@ -15,7 +15,7 @@ test.describe("Embeds google doc sharing URL preview test", () => {
 
     await page.type(
       ".editor-post-title__input",
-      "Test gooogle doc sharing URL preview"
+      "Test google doc sharing URL preview"
     );
 
     await page.click('role=button[name="Add block"i]');
