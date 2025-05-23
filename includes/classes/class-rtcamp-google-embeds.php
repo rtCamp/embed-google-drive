@@ -5,7 +5,7 @@
  * @package embed-google-drive
  */
 
-namespace RT_Google_Embeds;
+namespace Embed_Google_Drive;
 
 use WP_REST_Request;
 use WP_REST_Response;
@@ -79,7 +79,7 @@ class rtCamp_Google_Embeds {
 		);
 
 		foreach ( $formats as $format ) {
-			$providers[ $format ] = array( get_rest_url( null, 'rt-google-embed/v1/oembed' ), true );
+			$providers[ $format ] = array( get_rest_url( null, 'embed-google-drive/v1/oembed' ), true );
 		}
 
 		return $providers;
@@ -92,7 +92,7 @@ class rtCamp_Google_Embeds {
 	 */
 	public function load_textdomain() {
 
-		load_plugin_textdomain( 'embed-google-drive', false, RT_GOOGLE_EMBEDS_PLUGIN_DIR . 'languages/' );
+		load_plugin_textdomain( 'embed-google-drive', false, EMBED_GOOGLE_DRIVE_PLUGIN_DIR . 'languages/' );
 	}
 
 	/**
@@ -203,7 +203,7 @@ class rtCamp_Google_Embeds {
 			extract( $data, EXTR_OVERWRITE );
 		}
 
-		include RT_GOOGLE_EMBEDS_PLUGIN_DIR . $template; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		include EMBED_GOOGLE_DRIVE_PLUGIN_DIR . $template; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 
 		return ob_get_clean();
 	}
@@ -255,7 +255,7 @@ class rtCamp_Google_Embeds {
 	public function register_routes() {
 
 		register_rest_route(
-			'rt-google-embed/v1',
+			'embed-google-drive/v1',
 			'/get-preview-url',
 			array(
 				'methods'             => 'GET',
@@ -271,7 +271,7 @@ class rtCamp_Google_Embeds {
 
 		// Route for custom oembed provider for google drive.
 		register_rest_route(
-			'rt-google-embed/v1',
+			'embed-google-drive/v1',
 			'/oembed',
 			array(
 				'methods'             => 'GET',

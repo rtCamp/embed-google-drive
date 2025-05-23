@@ -14,18 +14,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! defined( 'RT_GOOGLE_EMBEDS_PLUGIN_FILE' ) ) {
-	define( 'RT_GOOGLE_EMBEDS_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'EMBED_GOOGLE_DRIVE_PLUGIN_FILE' ) ) {
+	define( 'EMBED_GOOGLE_DRIVE_PLUGIN_FILE', __FILE__ );
 }
 
-if ( ! defined( 'RT_GOOGLE_EMBEDS_VERSION' ) ) {
-	define( 'RT_GOOGLE_EMBEDS_VERSION', '1.2.1' );
+if ( ! defined( 'EMBED_GOOGLE_DRIVE_VERSION' ) ) {
+	define( 'EMBED_GOOGLE_DRIVE_VERSION', '1.2.1' );
 }
 
-if ( ! defined( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR' ) ) {
-	define( 'RT_GOOGLE_EMBEDS_PLUGIN_DIR', plugin_dir_path( RT_GOOGLE_EMBEDS_PLUGIN_FILE ) );
+if ( ! defined( 'EMBED_GOOGLE_DRIVE_PLUGIN_DIR' ) ) {
+	define( 'EMBED_GOOGLE_DRIVE_PLUGIN_DIR', plugin_dir_path( EMBED_GOOGLE_DRIVE_PLUGIN_FILE ) );
 }
 
-if ( ! class_exists( 'RT_Google_Embeds\rtCamp_Google_Embeds' ) ) {
-	require_once RT_GOOGLE_EMBEDS_PLUGIN_DIR . '/includes/classes/class-rtcamp-google-embeds.php';
+if ( ! class_exists( 'EMBED_GOOGLE_DRIVE\rtCamp_Google_Embeds' ) ) {
+	require_once EMBED_GOOGLE_DRIVE_PLUGIN_DIR . '/includes/classes/class-rtcamp-google-embeds.php';
 }
