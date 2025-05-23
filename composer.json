@@ -1,7 +1,7 @@
 {
-  "name"       : "rtcamp/rt-google-embeds",
+  "name"       : "rtcamp/embed-google-drive",
   "description": "Allows adding preview for your Google Drive Documents right in your editor.",
-  "homepage"   : "https://github.com/rtCamp/rt-google-embeds/",
+  "homepage"   : "https://github.com/rtCamp/embed-google-drive/",
   "type"       : "wordpress-plugin",
   "license"    : "GPL2.0",
   "require-dev": {

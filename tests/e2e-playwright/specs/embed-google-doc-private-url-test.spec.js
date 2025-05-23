@@ -15,7 +15,7 @@ test.describe('Embeds google doc Private preview test', () => {
 
 		await page.type(
 			'.editor-post-title__input',
-			'Test gooogle doc Private URL preview'
+			'Test google doc Private URL preview'
 		)
 
 		await page.click('role=button[name="Add block"i]')

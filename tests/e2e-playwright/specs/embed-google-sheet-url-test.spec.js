@@ -15,7 +15,7 @@ test.describe('Embeds google sheet sharing URL preview test', () => {
 
 		await page.type(
 			'.editor-post-title__input',
-			'Test gooogle sheet sharing URL preview'
+			'Test google sheet sharing URL preview'
 		)
 
 		await page.click('role=button[name="Add block"i]')
