@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Embed Google Drive plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Embed Google Drive 1.2.1\n"
+"Project-Id-Version: Embed Google Drive 1.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/embed-google-drive\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

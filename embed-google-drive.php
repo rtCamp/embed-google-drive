@@ -3,7 +3,7 @@
  * Plugin Name: Embed Google Drive
  * Description: Embed a link and preview of Google Drive Documents by pasting a shared document link into the editor.
  * Plugin URI: https://github.com/rtCamp/embed-google-drive
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: rtCamp
  * Text Domain: embed-google-drive
  * Author URI: https://rtcamp.com/
@@ -19,7 +19,7 @@ if ( ! defined( 'EMBED_GOOGLE_DRIVE_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'EMBED_GOOGLE_DRIVE_VERSION' ) ) {
-	define( 'EMBED_GOOGLE_DRIVE_VERSION', '1.2.1' );
+	define( 'EMBED_GOOGLE_DRIVE_VERSION', '1.2.2' );
 }
 
 if ( ! defined( 'EMBED_GOOGLE_DRIVE_PLUGIN_DIR' ) ) {
