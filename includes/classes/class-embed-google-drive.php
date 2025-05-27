@@ -13,23 +13,23 @@ use WP_REST_Response;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class rtCamp_Google_Embeds
+ * Class Embed_Google_Drive
  *
  * @package embed-google-drive
  */
-class rtCamp_Google_Embeds {
+class Embed_Google_Drive {
 
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var rtCamp_Google_Embeds
+	 * @var Embed_Google_Drive
 	 */
 	protected static $instance = null;
 
 	/**
-	 * rtCamp_Google_Embeds Plugin Instance.
+	 * Embed_Google_Drive Plugin Instance.
 	 *
-	 * @return rtCamp_Google_Embeds.
+	 * @return Embed_Google_Drive.
 	 */
 	public static function instance() {
 
@@ -41,7 +41,7 @@ class rtCamp_Google_Embeds {
 	}
 
 	/**
-	 * rtCamp_Google_Embeds constructor.
+	 * Embed_Google_Drive constructor.
 	 */
 	public function __construct() {
 
@@ -92,7 +92,7 @@ class rtCamp_Google_Embeds {
 	 */
 	public function load_textdomain() {
 
-		load_plugin_textdomain( 'embed-google-drive', false, EMBED_GOOGLE_DRIVE_PLUGIN_DIR . 'languages/' );
+		load_plugin_textdomain( 'embed-google-drive', false, dirname( plugin_basename( EMBED_GOOGLE_DRIVE_PLUGIN_FILE ) ) . '/languages/' );
 	}
 
 	/**
@@ -376,4 +376,4 @@ class rtCamp_Google_Embeds {
 }
 
 // Initialize the class.
-rtCamp_Google_Embeds::instance();
+Embed_Google_Drive::instance();
