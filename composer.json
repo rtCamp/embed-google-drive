@@ -5,7 +5,7 @@
   "type"       : "wordpress-plugin",
   "license"    : "GPL2.0",
   "require-dev": {
-    "automattic/vipwpcs": "^2.0.0",
+    "automattic/vipwpcs": "^3.0.1",
     "wp-coding-standards/wpcs": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "phpcompatibility/phpcompatibility-wp": "*"
